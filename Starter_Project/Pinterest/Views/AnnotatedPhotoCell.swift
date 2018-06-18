@@ -36,6 +36,7 @@ class AnnotatedPhotoCell: UICollectionViewCell {
   @IBOutlet fileprivate weak var imageView: UIImageView!
   @IBOutlet fileprivate weak var captionLabel: UILabel!
   @IBOutlet fileprivate weak var commentLabel: UILabel!
+  @IBOutlet weak var phtoHeightConstraint: NSLayoutConstraint!
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -51,6 +52,16 @@ class AnnotatedPhotoCell: UICollectionViewCell {
         commentLabel.text = photo.comment
       }
     }
+  }
+  
+  override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    super.apply(layoutAttributes)
+    
+    // Lolita : 這邊override使得autolayout產生conflicts, 但讓iOS自動layout則沒有問題.... 這樣還需要subclass UICollectionViewLayoutAttributes? 在哪些情況下, 需要subclass?
+//    if let pinterestLayoutAttributes = layoutAttributes as? PinterestLayoutAttributes {
+//      phtoHeightConstraint.constant = pinterestLayoutAttributes.photoHeight
+//    }
+    
   }
   
 }

@@ -16,6 +16,7 @@
 		7B0AC7BC1AAEF90000885D4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0AC7BB1AAEF90000885D4A /* AppDelegate.swift */; };
 		7B0AC7C11AAEF90000885D4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B0AC7BF1AAEF90000885D4A /* Main.storyboard */; };
 		7B0AC7C61AAEF90000885D4A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0AC7C41AAEF90000885D4A /* LaunchScreen.xib */; };
+		D354CAD520D7A65600AA4229 /* PinterestLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D354CAD420D7A65600AA4229 /* PinterestLayoutAttributes.swift */; };
 		D3AF152F20D583A400613C60 /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AF152E20D583A400613C60 /* PinterestLayout.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		7B0AC7BB1AAEF90000885D4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B0AC7C01AAEF90000885D4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7B0AC7C51AAEF90000885D4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		D354CAD420D7A65600AA4229 /* PinterestLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayoutAttributes.swift; sourceTree = "<group>"; };
 		D3AF152E20D583A400613C60 /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PinterestLayout.swift; path = Pinterest/Layouts/PinterestLayout.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -49,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				D3AF152E20D583A400613C60 /* PinterestLayout.swift */,
+				D354CAD420D7A65600AA4229 /* PinterestLayoutAttributes.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3AF152F20D583A400613C60 /* PinterestLayout.swift in Sources */,
+				D354CAD520D7A65600AA4229 /* PinterestLayoutAttributes.swift in Sources */,
 				77B260E71F2E74F7003A383F /* PhotoStreamViewController.swift in Sources */,
 				77B260E61F2E74F7003A383F /* Photo.swift in Sources */,
 				7B0AC7BC1AAEF90000885D4A /* AppDelegate.swift in Sources */,

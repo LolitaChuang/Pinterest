@@ -10,29 +10,40 @@ import UIKit
 
 protocol PinterestLayoutDelegate {
 //  func collectionViewItemHeight(at indexPath:NSIndexPath) -> CGFloat;
-  func collectionView(collectionView: UICollectionView, heightForItemAtIndexPath: NSIndexPath) -> CGFloat
+  func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath: NSIndexPath, withWidth: CGFloat) -> CGFloat
+  func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath: NSIndexPath, withWidth: CGFloat) -> CGFloat
 }
 
 class PinterestLayout: UICollectionViewLayout {
-  var delegate: PinterestLayoutDelegate! // Lolita:不能設定為nil？ = nil
+  var delegate: PinterestLayoutDelegate? = nil // Lolita:不能設定為nil？ = nil
   var numberOfColumn: Int = 1
 //  private var cache: [UICollectionViewLayoutAttributes] = []
-  private var cache = [UICollectionViewLayoutAttributes]()
+  private var cache = [PinterestLayoutAttributes]() // Lolita : 如何lazy? 設定為nil後, 可以重新initialize....? 或繼續append...? 
   private var contentHeight: CGFloat = 0
-  private var width: CGFloat {
-    get {
-      return collectionView!.bounds.width // Lolita : get每次都會重算嗎?
+  
+  fileprivate var contentWidth: CGFloat {
+    guard let collectionView = collectionView else {
+      return 0
     }
+    let insets = collectionView.contentInset
+    return collectionView.bounds.width - (insets.left + insets.right) // Lolita : 和collectionview是否能左右滑動有關...; 為什麼和collectionView.bounds.width一樣大, 會使得collection view滑動呢?
   }
+  
+//  private var width: CGFloat {
+//    get {
+//      return collectionView!.bounds.width // Lolita : get每次都會重算嗎?
+//    }
+//  }
   
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+//    self.estimatedItemSize = 210 => flow layout 才有
   }
   
   override var collectionViewContentSize: CGSize {
     get {
-      return CGSize(width: width, height: contentHeight)
+      return CGSize(width: contentWidth, height: contentHeight)
 //      return CGSize(width: collectionView!.frame.size.width, height: contentHeight)
     }
   }
@@ -42,7 +53,7 @@ class PinterestLayout: UICollectionViewLayout {
   override func prepare() {
     // Lolita : 算出每一個然後存在cache?
     if cache.isEmpty {
-      let columnWidth: CGFloat = width / CGFloat(numberOfColumn)
+      let columnWidth: CGFloat = contentWidth / CGFloat(numberOfColumn)
       
       var xOffsets = [CGFloat]()
       for column in 0..<numberOfColumn {
@@ -55,10 +66,16 @@ class PinterestLayout: UICollectionViewLayout {
       for item in 0..<collectionView!.numberOfItems(inSection: 0) {
         let indexPath = NSIndexPath(item: item, section: 0)
         
-        let height = delegate.collectionView(collectionView: collectionView!, heightForItemAtIndexPath: indexPath)
+        let photoHeight = delegate?.collectionView(collectionView: collectionView!, heightForPhotoAtIndexPath: indexPath, withWidth: columnWidth) // Lolita : 怎麼寫比較好呢?
+        let annotaionHeight = delegate?.collectionView(collectionView: collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: columnWidth)
+        
+        
+        let height = 20 + ((photoHeight == nil) ? 0 : photoHeight!) + 10 + ((annotaionHeight == nil) ? 0 : annotaionHeight!) + 20
+        print("height : \(height)")
         let frame = CGRect(x: xOffsets[column], y: yOffsets[column], width: columnWidth, height: height)
         
-        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath as IndexPath) // Lolita : 要加 as IndexPath
+        let attributes = PinterestLayoutAttributes(forCellWith: indexPath as IndexPath) // Lolita : 要加 as IndexPath
+        attributes.photoHeight = height
         attributes.frame = frame
         cache.append(attributes)
         
@@ -71,15 +88,24 @@ class PinterestLayout: UICollectionViewLayout {
   }
   
   override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    var attributes = [UICollectionViewLayoutAttributes]()
+    
+    var attributes = [PinterestLayoutAttributes]()
     
     for attribute in cache {
       if attribute.frame.intersects(rect) {
-//        attributes.append(attribute.copy() as! UICollectionViewLayoutAttributes)
+//        attributes.append(attribute.copy() as! PinterestLayoutAttributes)
         attributes.append(attribute )
       }
     }
     
     return attributes
+  }
+  
+  // 因為有custom layout attributes
+  override class var layoutAttributesClass: Swift.AnyClass { // override this method to provide a custom class to be used when instantiating instances of UICollectionViewLayoutAttributes
+    get {
+      return PinterestLayoutAttributes.self
+    }
+    
   }
 }

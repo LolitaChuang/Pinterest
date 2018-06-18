@@ -56,9 +56,20 @@ class PhotoStreamViewController: UICollectionViewController {
 
 
 extension PhotoStreamViewController: PinterestLayoutDelegate {
-  func collectionView(collectionView: UICollectionView, heightForItemAtIndexPath: NSIndexPath) -> CGFloat {
-//    let photo = photos[heightForItemAtIndexPath.item]
-    return 100
+//  func collectionView(collectionView: UICollectionView, heightForItemAtIndexPath: NSIndexPath) -> CGFloat {
+//    return 100
+//  }
+  
+  func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath: NSIndexPath, withWidth: CGFloat) -> CGFloat {
+    let photo = photos[heightForPhotoAtIndexPath.item]
+    let boundingRect = CGRect(x: 0, y: 0, width: withWidth, height: CGFloat.greatestFiniteMagnitude)
+    let rect = AVMakeRect(aspectRatio: photo.image.size, insideRect: boundingRect)
+    
+    return rect.height
+  }
+  
+  func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath: NSIndexPath, withWidth: CGFloat) -> CGFloat {
+    return 60
   }
 }
 
